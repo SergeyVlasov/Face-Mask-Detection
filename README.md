@@ -14,13 +14,13 @@ source /path/MyEnv/bin/activate
 
 3) устанавливаем все необходимые библиотеки
 
-pip3 install tensorflow
-pip3 install keras
-pip3 install imutils
-pip3 install numpy
-pip3 install opencv-python
-pip3 install matplotlib
-pip3 install scipy
+- pip3 install tensorflow
+- pip3 install keras
+- pip3 install imutils
+- pip3 install numpy
+- pip3 install opencv-python
+- pip3 install matplotlib
+- pip3 install scipy
 
 
 4) создаем папку для нашего проекта и копируем github 
