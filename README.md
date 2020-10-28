@@ -5,11 +5,11 @@ RU version
 
 1) создаем виртуальное кружение
 
-python3 -m virtualenv /path/MyEnv
+- python3 -m virtualenv /path/MyEnv
 
 2) активируем виртуальное окружение
 
-source /path/MyEnv/bin/activate
+- source /path/MyEnv/bin/activate
 
 
 3) устанавливаем все необходимые библиотеки
@@ -25,14 +25,14 @@ source /path/MyEnv/bin/activate
 
 4) создаем папку для нашего проекта и копируем github 
 
-cd /path/to/project
+- cd /path/to/project
 
 git clone https://github.com/SergeyVlasov/Face-Mask-Detection
 
 
 5) запускаем фаил
 
-python3 detect_mask_video.py
+- python3 detect_mask_video.py
 
 
 
