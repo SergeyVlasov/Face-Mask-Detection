@@ -12,7 +12,7 @@ python3 -m virtualenv /path/MyEnv
 source /path/MyEnv/bin/activate
 
 
-3)устанавливаем все необходимые библиотеки
+3) устанавливаем все необходимые библиотеки
 
 pip3 install tensorflow
 pip3 install keras
@@ -23,14 +23,14 @@ pip3 install matplotlib
 pip3 install scipy
 
 
-4)создаем папку для нашего проекта и копируем github 
+4) создаем папку для нашего проекта и копируем github 
 
 cd /path/to/project
 
 git clone https://github.com/SergeyVlasov/Face-Mask-Detection
 
 
-5)запускаем фаил
+5) запускаем фаил
 
 python3 detect_mask_video.py
 
