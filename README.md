@@ -27,7 +27,7 @@ RU version
 
 - cd /path/to/project
 
-git clone https://github.com/SergeyVlasov/Face-Mask-Detection
+- git clone https://github.com/SergeyVlasov/Face-Mask-Detection
 
 
 5) запускаем фаил
