@@ -9,6 +9,12 @@ import time
 import cv2
 import os
 
+from threading import Thread
+
+mask_detect = False
+angle = 0
+
+
 def detect_and_predict_mask(frame, faceNet, maskNet):
 	# grab the dimensions of the frame and then construct a blob
 	# from it
@@ -19,7 +25,7 @@ def detect_and_predict_mask(frame, faceNet, maskNet):
 	# pass the blob through the network and obtain the face detections
 	faceNet.setInput(blob)
 	detections = faceNet.forward()
-	print(detections.shape)
+	# print(detections.shape)
 
 	# initialize our list of faces, their corresponding locations,
 	# and the list of predictions from our face mask network
@@ -59,6 +65,9 @@ def detect_and_predict_mask(frame, faceNet, maskNet):
 			faces.append(face)
 			locs.append((startX, startY, endX, endY))
 
+		else:
+			closefunc	
+
 	# only make a predictions if at least one face was detected
 	if len(faces) > 0:
 		# for faster inference we'll make batch predictions on *all*
@@ -70,6 +79,7 @@ def detect_and_predict_mask(frame, faceNet, maskNet):
 	# return a 2-tuple of the face locations and their corresponding
 	# locations
 	return (locs, preds)
+
 
 # load our serialized face detector model from disk
 prototxtPath = r"face_detector/deploy.prototxt"
@@ -83,46 +93,106 @@ maskNet = load_model("mask_detector.model")
 print("[INFO] starting video stream...")
 vs = VideoStream(src=0).start()
 
+
+def video_stream_mask_recognise():
 # loop over the frames from the video stream
-while True:
-	# grab the frame from the threaded video stream and resize it
-	# to have a maximum width of 400 pixels
-	frame = vs.read()
-	frame = imutils.resize(frame, width=400)
 
-	# detect faces in the frame and determine if they are wearing a
-	# face mask or not
-	(locs, preds) = detect_and_predict_mask(frame, faceNet, maskNet)
+	global mask_detect
 
-	# loop over the detected face locations and their corresponding
-	# locations
-	for (box, pred) in zip(locs, preds):
-		# unpack the bounding box and predictions
-		(startX, startY, endX, endY) = box
-		(mask, withoutMask) = pred
+	while True:
+		#time.sleep(1)
+		# grab the frame from the threaded video stream and resize it
+		# to have a maximum width of 400 pixels
+		frame = vs.read()
+		frame = imutils.resize(frame, width=400)
 
-		# determine the class label and color we'll use to draw
-		# the bounding box and text
-		label = "Mask" if mask > withoutMask else "No Mask"
-		color = (0, 255, 0) if label == "Mask" else (0, 0, 255)
+		# detect faces in the frame and determine if they are wearing a
+		# face mask or not
+		(locs, preds) = detect_and_predict_mask(frame, faceNet, maskNet)
 
-		# include the probability in the label
-		label = "{}: {:.2f}%".format(label, max(mask, withoutMask) * 100)
+		# loop over the detected face locations and their corresponding
+		# locations
+		for (box, pred) in zip(locs, preds):
+			# unpack the bounding box and predictions
+			(startX, startY, endX, endY) = box
+			(mask, withoutMask) = pred
 
-		# display the label and bounding box rectangle on the output
-		# frame
-		cv2.putText(frame, label, (startX, startY - 10),
-			cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
-		cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
+			# determine the class label and color we'll use to draw
+			# the bounding box and text
 
-	# show the output frame
-	cv2.imshow("Frame", frame)
-	key = cv2.waitKey(1) & 0xFF
+			if (mask > withoutMask):
+				label = "Mask"
+				mask_detect = True
+			else:
+				label = "NO Mask"
+				mask_detect = False
 
-	# if the `q` key was pressed, break from the loop
-	if key == ord("q"):
-		break
+			# label = "Mask" if mask > withoutMask else "No Mask"
+			color = (0, 255, 0) if label == "Mask" else (0, 0, 255)
+
+			# include the probability in the label
+			label = "{}: {:.2f}%".format(label, max(mask, withoutMask) * 100)
+
+			# display the label and bounding box rectangle on the output
+			# frame
+			cv2.putText(frame, label, (startX, startY - 10),
+			            cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
+			cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
+
+		# show the output frame
+		cv2.imshow("Frame", frame)
+		key = cv2.waitKey(1) & 0xFF
+
+		# if the `q` key was pressed, break from the loop
+		if key == ord("q"):
+			break
+
+
+def openfunc():
+	global angle
+	if (mask_detect):
+		while (angle != 90):
+			if mask_detect:
+				angle += 10
+				print("open, angle = " + str(angle))
+				time.sleep(0.5)
+			else:
+				while (angle != 0):
+					angle -= 10
+					print("close, angle = " + str(angle))
+					time.sleep(0.5)
+	else:
+		while (angle != 0):
+			angle -= 10
+			print("close, angle = " + str(angle))
+			time.sleep(0.5)
+		#...	
+def func():
+	while True:
+		openfunc()
+
+
+def closefunc():
+	global angle
+	while (angle != 0):
+		angle -= 10
+		print("close, angle = " + str(angle))
+		time.sleep(0.5)
+
+thread1 = Thread(target=video_stream_mask_recognise, args=())
+thread2 = Thread(target=func , args=())
+ 
+thread1.start()
+thread2.start()
+thread1.join()
+thread2.join()
+
+
 
 # do a bit of cleanup
 cv2.destroyAllWindows()
 vs.stop()
+
+
+
+
