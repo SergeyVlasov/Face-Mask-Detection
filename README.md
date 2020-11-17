@@ -1,5 +1,5 @@
 # Face-Mask-Detection
-Detecting face masks using Python, Keras, OpenCV on real video streams
+Определение наличия маски и (в зависимости от маски) открытие двери
 
 ![til](https://github.com/SergeyVlasov/Face-Mask-Detection/blob/master/media/mask_detect.gif)
 
