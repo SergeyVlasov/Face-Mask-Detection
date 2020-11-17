@@ -127,46 +127,6 @@ def video_stream_recognise():
 
 
 
-'''
-
-улучшение кода (возможность закрывать дверь если человек снял маску проходя через дверь)
-
-эта часть слишком тяжелая для raspberry pi 3 (работает на intel i3 ) , возможно, заработает на RPi4
-
-
-def opendoorfunc():
-    global angle
-    while True:
-        time.sleep(0.5)
-        if (mask_detect):
-            while (angle != 90):
-                if mask_detect:
-                    angle += 10
-                    print("open, angle = " + str(angle))
-                    time.sleep(0.5)
-                else:
-                    while (angle != 0):
-                        angle -= 10
-                        print("close, angle = " + str(angle))
-                        time.sleep(0.5)
-        else:
-            while (angle != 0):
-                angle -= 10
-                print("close, angle = " + str(angle))
-                time.sleep(0.5)
-        #...    
-
-
-thread1 = Thread(target=video_stream_recognise, args=())
-thread2 = Thread(target=opendoorfunc , args=())
- 
-thread1.start()
-thread2.start()
-thread1.join()
-thread2.join()
-'''
-
-
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 coil_A_1_pin = 17 # IN1
@@ -221,3 +181,45 @@ if __name__ == '__main__':
 # do a bit of cleanup
 cv2.destroyAllWindows()
 vs.stop()
+
+
+
+
+'''
+
+улучшение кода (возможность закрывать дверь если человек снял маску проходя через дверь)
+
+эта часть слишком тяжелая для raspberry pi 3 (работает на intel i3 ) , возможно, заработает на RPi4
+
+
+def opendoorfunc():
+    global angle
+    while True:
+        time.sleep(0.5)
+        if (mask_detect):
+            while (angle != 90):
+                if mask_detect:
+                    angle += 10
+                    print("open, angle = " + str(angle))
+                    time.sleep(0.5)
+                else:
+                    while (angle != 0):
+                        angle -= 10
+                        print("close, angle = " + str(angle))
+                        time.sleep(0.5)
+        else:
+            while (angle != 0):
+                angle -= 10
+                print("close, angle = " + str(angle))
+                time.sleep(0.5)
+        #...    
+
+
+thread1 = Thread(target=video_stream_recognise, args=())
+thread2 = Thread(target=opendoorfunc , args=())
+ 
+thread1.start()
+thread2.start()
+thread1.join()
+thread2.join()
+'''
