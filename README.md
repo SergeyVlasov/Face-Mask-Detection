@@ -1,7 +1,19 @@
 # Face-Mask-Detection
 Detecting face masks using Python, Keras, OpenCV on real video streams
 
+Raspberry Pi 3 B+
+
+step motor 28BYJ-48
+
+motor driver ULN2003
+
+
+
+
+
 RU version
+
+Устатовка:
 
 1) создаем виртуальное кружение
 
