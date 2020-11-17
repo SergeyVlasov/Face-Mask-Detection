@@ -4,9 +4,11 @@ Detecting face masks using Python, Keras, OpenCV on real video streams
 Raspberry Pi 3 B+
 
 step motor 28BYJ-48
+![Image alt](https://github.com/SergeyVlasov/Face-Mask-Detection/blob/master/media/28BYJ-48.jpg)
+
 
 motor driver ULN2003
-
+![Image alt](https://github.com/SergeyVlasov/Face-Mask-Detection/blob/master/media/ULN2003.jpg)
 
 
 
