@@ -21,11 +21,13 @@ motor driver ULN2003
 ![Image alt](https://github.com/SergeyVlasov/Face-Mask-Detection/blob/master/media/ULN2003.jpg)
 
 
+подключение драйвера
 
 
-RU version
+![Image alt](https://github.com/SergeyVlasov/Face-Mask-Detection/blob/master/media/pin.jpg)
 
-Устатовка:
+
+Установка:
 
 1) создаем виртуальное кружение
 
