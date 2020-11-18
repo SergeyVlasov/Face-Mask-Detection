@@ -189,37 +189,72 @@ vs.stop()
 
 улучшение кода (возможность закрывать дверь если человек снял маску проходя через дверь)
 
-эта часть слишком тяжелая для raspberry pi 3 (работает на intel i3 ) , возможно, заработает на RPi4
+эта часть слишком тяжелая для raspberry pi 3 (работает на intel i3 ) , возможно, заработает на Raspberry 4
+
+mask_detected = True
+open_door =0
 
 
-def opendoorfunc():
+
+def forward(delay, steps):
+    global open_door
+    for i in range(steps):
+        open_door += 1
+        for j in range(StepCount):
+            setStep(Seq[j][0], Seq[j][1], Seq[j][2], Seq[j][3])
+            time.sleep(delay)
+
+def backwards(delay, steps):
+    global open_door
+    for i in range(steps):
+        open_door -= 1
+        for j in reversed(range(StepCount)):
+            setStep(Seq[j][0], Seq[j][1], Seq[j][2], Seq[j][3])
+            time.sleep(delay)
+
+
+
+def opendoor():
+    global mask_detected
     global angle
-    while True:
-        time.sleep(0.5)
-        if (mask_detect):
-            while (angle != 90):
-                if mask_detect:
-                    angle += 10
-                    print("open, angle = " + str(angle))
-                    time.sleep(0.5)
+    while (True):
+        
+        if mask_detected:
+            while (open_door != 150):
+                if mask_detected:
+                    forward(int(delay) / 1000.0, int(150)) 
                 else:
-                    while (angle != 0):
-                        angle -= 10
-                        print("close, angle = " + str(angle))
-                        time.sleep(0.5)
+                    while (open_door != 0):
+                        backwards(int(delay) / 1000.0, int(150))
+                    
         else:
-            while (angle != 0):
-                angle -= 10
-                print("close, angle = " + str(angle))
-                time.sleep(0.5)
-        #...    
+            while (open_door != 0):
+                backwards(int(delay) / 1000.0, int(150))
 
 
-thread1 = Thread(target=video_stream_recognise, args=())
-thread2 = Thread(target=opendoorfunc , args=())
- 
-thread1.start()
-thread2.start()
-thread1.join()
-thread2.join()
+def change_mask_detect_var():
+    import random
+    global mask_detected
+    while True:
+        a = random.randint(1,10)
+        if (a > 2):
+            mask_detected = False
+            
+        else:
+            mask_detected = True
+        print(mask_detected)    
+        time.sleep(1)
+
+thread1 = Thread(target=change_mask_detect_var, args=())
+thread2 = Thread(target=opendoor , args=())
+
+
+if name == '__main__':
+    thread1.start()
+    thread2.start()
+    thread1.join()
+    thread2.join()
+    
+    
+	    
 '''
